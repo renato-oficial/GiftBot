@@ -12,14 +12,6 @@ bot.setCommands([
     description: "Adicionar saldo",
   },
   {
-    command: "afiliados",
-    description: "Link de indicação",
-  },
-  {
-    command: "pin",
-    description: "Meu PIN de cliente",
-  },
-  {
     command: "instrucoes",
     description: "Instruções de uso",
   },

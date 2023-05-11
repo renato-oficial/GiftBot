@@ -16,6 +16,8 @@ module.exports.recharge_command = async (ctx) => {
 
     const qrcode = response.qr_code;
     const id = response.id;
+    const user_service = userFactorySingleton.userService();
+    await user_service.updateUser(String(ctx.from.id), { oderId: String(id) });
 
     ctx.replyWithMarkdown(`\`${qrcode}\``).then(({ message_id }) => {
       setTimeout(() => ctx.deleteMessage(message_id), 330000);
@@ -37,8 +39,8 @@ module.exports.recharge_command = async (ctx) => {
       const status = await payment.orderStatus(id);
       if (status.toString().includes("approved")) {
         try {
-          const user_service = userFactorySingleton.userService();
-          await user_service.updateUser(ctx.from.id, { status: "paid" });
+        
+          await user_service.updateUser(String(ctx.from.id), { oderId: "" });
           ctx
             .replyWithMarkdown(
               "✅ Recebemos o seu pagamento, aproveite nosso serviço."

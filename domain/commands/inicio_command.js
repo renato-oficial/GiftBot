@@ -6,9 +6,7 @@ module.exports.start_command = async (ctx) => {
   const { id, first_name, last_name, username } = ctx.from;
   const user_service = userFactorySingleton.userService();
 
-  const new_user = new User({ id, first_name, last_name, username });
-
-  await user_service.createUser(new_user);
+  await user_service.createUser({ chatId: String(id), username, lastName: last_name});
 
   await banner(ctx);
 };

@@ -3,64 +3,23 @@ class UserService {
     this.userRepository = userRepository;
   }
 
-  async createUser(user) {
+  async createUser(data) {
     try {
-      if (!user) return;
-      const { id } = user;
-      // Verifica se o usuário já existe
-      const userExist = await this.getUserById(id);
-      if (userExist.length) return;
-
-      // Cria um novo usuário
-      return await this.userRepository.createUser(user);
+      if (!data){
+        return console.log({ error: "Error! Create new  user, data can't be empty."})
+      } 
+      return await this.userRepository.createUser(data);
     } catch (error) {
       console.error(error);
     }
   }
 
-  async getUserById(id) {
+ 
+  async updateUser(chatId, data) {
     try {
-      if (!id) return;
-
-      return await this.userRepository.findById(String(id));
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async inserInvitedUser(hosteUser, convidado_id) {
-    try {
-      if (!hosteUser || !convidado_id) return;
-      if (typeof hosteUser == "number") {
-        hosteUser = String(hosteUser);
-      }
-      if (typeof convidado_id == "number") {
-        convidado_id = String(convidado_id);
-      }
-
-      // Verifica se o usuário já existe
-      const checkInvitedExists = await this.getUserById(convidado_id);
-      const checkHosterExist = await this.getUserById(hosteUser);
-      if (checkInvitedExists && checkInvitedExists.length) return;
-      if (!checkHosterExist.length) return;
-
-      return await this.userRepository.insertAfiliate(
-        checkHosterExist[0],
-        convidado_id
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  async updateUser(id, update) {
-    try {
-      if (!id || !update) return;
-      if (typeof id == "number") {
-        id = String(id);
-      }
-      const old_user = await this.getUserById(id);
-      if (!old_user) return;
-      return await this.userRepository.updateUser(id, update);
+      if (!id || !data) return;
+     
+      return await this.userRepository.updateUser(chatId, data);
     } catch (error) {
       console.error(error);
     }

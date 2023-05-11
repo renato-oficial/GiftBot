@@ -1,58 +1,25 @@
-const Datastore = require("nedb");
-const path = require("path");
+const { database } = require("../../prisma/prismaClient");
+
+
 
 class UserRepository {
-  constructor() {
-    try {
-      // Cria um novo datastore
-      this.db = new Datastore({ filename: "users.db", autoload: true });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  createUser = (object) => {
-    return new Promise((resolve, reject) => {
-      this.db.insert({ ...object }, (err, newDoc) => {
-        if (err) reject(err);
-        resolve(newDoc);
-      });
-    });
+
+  createUser = async (data) => {
+     return await database.user.create({
+        data
+    })
   };
 
-  async findById(id) {
-    return new Promise((resolve, reject) => {
-      this.db.find({ id }, (err, doc) => {
-        if (err) reject(err);
-        resolve(doc);
-      });
-    });
+
+
+
+  async updateUser(id, data) {
+     return await database.user.update({
+      where: { chatId : id },
+      data
+    })
   }
 
-  async insertAfiliate(oldUser, newInvitedId) {
-    return new Promise((resolve, reject) => {
-      const _id = oldUser._id;
-      this.db.update(
-        { _id },
-        { $addToSet: { afiliados: newInvitedId } },
-        {},
-        function (err, doc) {
-          if (err) reject(err);
-          resolve(doc);
-        }
-      );
-    });
-  }
-  async updateUser(id, update) {
-    return new Promise((resolve, reject) => {
-      // Upserting a document
-      this.db.update({ id }, { $set: update }, {}, function (err, numReplaced) {
-        if (err) reject(err);
-        resolve(numReplaced);
-        // numReplaced = 1, upsert = { _id: 'id5', planet: 'Pluton', inhabited: false }
-        // A new document { _id: 'id5', planet: 'Pluton', inhabited: false } has been added to the collection
-      });
-    });
-  }
   async deleteUser(id) {
     return new Promise((resolve, reject) => {
       this.db.remove({ id }, {}, function (err, numRemoved) {
