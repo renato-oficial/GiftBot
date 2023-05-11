@@ -1,8 +1,8 @@
 const { Bot } = require("./bot");
 
-const bot = new Bot();
+const myBot = new Bot();
 
-bot.setCommands([
+myBot.setCommands([
   {
     command: "start",
     description: "Inicio",
@@ -25,4 +25,4 @@ bot.setCommands([
   },
 ]);
 
-bot.launch();
+myBot.launch();
