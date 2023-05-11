@@ -20,7 +20,7 @@ const updateUser = async () => {
 
 const deleteUser = async () => {
     const del = await database.user.delete({
-        where: { chatId: "5549522685" },
+        where: { chatId: "5406166623" },
       })
     console.log(del)
 }
@@ -30,6 +30,6 @@ deleteUser()
 }) 
 .catch(async (e) => {
     console.error(e)
-    await prisma.$disconnect()
+    await database.$disconnect()
     process.exit(1)
 })

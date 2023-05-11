@@ -17,8 +17,10 @@ class UserService {
  
   async updateUser(chatId, data) {
     try {
-      if (!id || !data) return;
      
+      if(!chatId) throw new Error("Identificador do chat não foi passado.")
+      if(!data) throw new Error("Dados de atualização não foi definida")
+
       return await this.userRepository.updateUser(chatId, data);
     } catch (error) {
       console.error(error);
